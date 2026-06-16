@@ -1,0 +1,2 @@
+# M08F thermal printer (STM32 Virtual COM Port)
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="5740", MODE="0660", GROUP="uucp", SYMLINK+="m08f"

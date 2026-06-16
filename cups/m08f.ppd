@@ -1,0 +1,47 @@
+*PPD-Adobe: "4.3"
+*FormatVersion: "4.3"
+*FileVersion: "1.0"
+*LanguageVersion: English
+*LanguageEncoding: ISOLatin1
+*PCFileName: "M08F.PPD"
+*Manufacturer: "M08F"
+*Product: "(M08F Thermal)"
+*ModelName: "M08F A4 Thermal"
+*ShortNickName: "M08F"
+*NickName: "M08F A4 Thermal Printer"
+*PSVersion: "(3010.000) 0"
+*LanguageLevel: "3"
+*ColorDevice: False
+*DefaultColorSpace: Gray
+*FileSystem: False
+*Throughput: "1"
+*cupsFilter: "application/vnd.cups-pdf 0 -"
+
+*OpenUI *PageSize/Media Size: PickOne
+*DefaultPageSize: A4
+*PageSize A4/A4: "<</PageSize[595 842]>>setpagedevice"
+*CloseUI: *PageSize
+
+*OpenUI *PrintDensity/Print Density: PickOne
+*DefaultPrintDensity: 5
+*PrintDensity 1/1 (lightest): ""
+*PrintDensity 3/3: ""
+*PrintDensity 5/5 (default): ""
+*PrintDensity 7/7: ""
+*PrintDensity 8/8 (darkest): ""
+*CloseUI: *PrintDensity
+
+*OpenUI *PaperCut/Paper Cut: PickOne
+*DefaultPaperCut: None
+*PaperCut None/No cut: ""
+*PaperCut Partial/Partial: ""
+*PaperCut Full/Full: ""
+*CloseUI: *PaperCut
+
+*OpenUI *LineFeed/Extra Line Feed: PickOne
+*DefaultLineFeed: 3
+*LineFeed 0/None: ""
+*LineFeed 3/Small: ""
+*LineFeed 6/Medium: ""
+*LineFeed 10/Large: ""
+*CloseUI: *LineFeed

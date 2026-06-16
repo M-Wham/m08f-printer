@@ -1,0 +1,34 @@
+#!/bin/sh
+# CUPS backend wrapping the m08f CLI.
+# CUPS calls with no args for discovery; print args: job user title copies opts [file]
+#
+# Before installing, replace __M08F_BIN__ (last line) with the absolute path to
+# the `m08f` executable, e.g. /path/to/m08f-printer/.venv/bin/m08f or `command -v m08f`.
+
+if [ "$#" -eq 0 ]; then
+    echo 'direct m08f "M08F Thermal" "M08F A4 Thermal Printer"'
+    exit 0
+fi
+
+# Args: 1=job 2=user 3=title 4=copies 5=options 6=file (absent = stdin)
+OPTIONS="$5"
+FILE="$6"
+
+density=5; cut=None; feed=3
+for kv in $OPTIONS; do
+    case "$kv" in
+        PrintDensity=*) density="${kv#*=}" ;;
+        PaperCut=*)     cut="${kv#*=}" ;;
+        LineFeed=*)     feed="${kv#*=}" ;;
+    esac
+done
+
+if [ -n "$FILE" ]; then
+    src="$FILE"
+else
+    src="$(mktemp --suffix=.pdf)"
+    cat > "$src"
+    trap 'rm -f "$src"' EXIT
+fi
+
+exec __M08F_BIN__ print "$src" --density "$density" --cut "$cut" --feed "$feed"

@@ -1,0 +1,48 @@
+[project]
+name = "m08f-printer"
+version = "0.1.0"
+description = "Linux driver/CLI/CUPS backend for the M08F A4 thermal printer (Phomemo / COLORWING / AIMO)"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "mwham", email = "mwams-mail@proton.me" }]
+requires-python = ">=3.9"
+dependencies = ["pyserial>=3.5", "Pillow>=9.0"]
+keywords = [
+    "m08f",
+    "phomemo",
+    "colorwing",
+    "aimo",
+    "thermal-printer",
+    "a4",
+    "cups",
+    "escpos",
+    "linux",
+    "printer-driver",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Printing",
+]
+
+[project.urls]
+Homepage = "https://github.com/mwham/m08f-printer"
+Repository = "https://github.com/mwham/m08f-printer"
+Issues = "https://github.com/mwham/m08f-printer/issues"
+
+[project.scripts]
+m08f = "m08f.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["m08f*"]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
