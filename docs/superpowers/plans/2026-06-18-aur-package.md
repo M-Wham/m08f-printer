@@ -29,7 +29,7 @@ curl -sIL -o /dev/null -w '%{http_code}\n' \
 
 Expected: `200`. If it returns `404`, **stop** — the human must `git tag v0.1.0 && git push origin v0.1.0` first (the sandbox has no GitHub push auth). Without the tag, Task 4 (checksum) cannot complete.
 
-All paths below are relative to the repo root `/home/mwham/Projects/thermal-printer`.
+All paths below are relative to the repo root.
 
 ---
 
