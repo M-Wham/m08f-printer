@@ -19,7 +19,7 @@ sudo systemctl enable --now cups
 ## Install
 
 ```bash
-git clone https://github.com/mwham/m08f-printer && cd m08f-printer
+git clone https://github.com/M-Wham/m08f-printer && cd m08f-printer
 python3 -m venv .venv
 .venv/bin/pip install -e .
 

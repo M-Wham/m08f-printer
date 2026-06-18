@@ -30,9 +30,9 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mwham/m08f-printer"
-Repository = "https://github.com/mwham/m08f-printer"
-Issues = "https://github.com/mwham/m08f-printer/issues"
+Homepage = "https://github.com/M-Wham/m08f-printer"
+Repository = "https://github.com/M-Wham/m08f-printer"
+Issues = "https://github.com/M-Wham/m08f-printer/issues"
 
 [project.scripts]
 m08f = "m08f.cli:main"
