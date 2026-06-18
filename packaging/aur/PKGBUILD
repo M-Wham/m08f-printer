@@ -1,0 +1,39 @@
+# Maintainer: mwham <mwams-mail@proton.me>
+pkgname=m08f-printer
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Linux driver/CLI/CUPS backend for the M08F A4 thermal printer (Phomemo / COLORWING / AIMO)"
+arch=('any')
+url="https://github.com/M-Wham/m08f-printer"
+license=('MIT')
+depends=('python' 'python-pyserial' 'python-pillow' 'ghostscript' 'cups')
+makedepends=('python-build' 'python-installer' 'python-wheel' 'python-setuptools')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('f10f6e1f54e3f999b14a94459a7476f3b7070564b54e566c022454ea6689d936')
+
+build() {
+    cd "$srcdir/$pkgname-$pkgver"
+    python -m build --wheel --no-isolation
+}
+
+package() {
+    cd "$srcdir/$pkgname-$pkgver"
+    python -m installer --destdir="$pkgdir" dist/*.whl
+
+    # udev rule (device access without sudo)
+    install -Dm644 udev/99-m08f.rules \
+        "$pkgdir/usr/lib/udev/rules.d/99-m08f.rules"
+
+    # CUPS backend: rewrite the build-time placeholder to the installed binary
+    # path. CUPS requires backend mode 700.
+    install -dm755 "$pkgdir/usr/lib/cups/backend"
+    sed 's|__M08F_BIN__|/usr/bin/m08f|' cups/m08f-backend \
+        > "$pkgdir/usr/lib/cups/backend/m08f"
+    chmod 700 "$pkgdir/usr/lib/cups/backend/m08f"
+
+    # CUPS PPD
+    install -Dm644 cups/m08f.ppd "$pkgdir/usr/share/cups/model/m08f.ppd"
+
+    # License
+    install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
