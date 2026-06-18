@@ -18,6 +18,15 @@ sudo systemctl enable --now cups
 
 ## Install
 
+Quick install (any distro) — sets up everything below in one step:
+
+```bash
+git clone https://github.com/M-Wham/m08f-printer && cd m08f-printer
+sudo ./install.sh          # then: m08f probe && m08f calibrate
+```
+
+Removes cleanly with `sudo ./uninstall.sh`. Prefer to do it by hand? Manual steps:
+
 ```bash
 git clone https://github.com/M-Wham/m08f-printer && cd m08f-printer
 python3 -m venv .venv
