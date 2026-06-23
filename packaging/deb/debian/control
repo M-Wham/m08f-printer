@@ -1,0 +1,22 @@
+Source: m08f-printer
+Section: utils
+Priority: optional
+Maintainer: mwham <mwams-mail@proton.me>
+Build-Depends: debhelper-compat (= 13), dh-python, python3-all, python3-setuptools
+Standards-Version: 4.6.2
+Homepage: https://github.com/M-Wham/m08f-printer
+Rules-Requires-Root: no
+
+Package: m08f-printer
+Architecture: all
+Depends: ${python3:Depends},
+ ${misc:Depends},
+ python3-serial,
+ python3-pil,
+ ghostscript,
+ cups
+Description: Linux driver and CUPS backend for the M08F A4 thermal printer
+ Provides a CLI (m08f print/probe/calibrate/status) and a CUPS backend so the
+ M08F A4 thermal printer (sold as Phomemo / COLORWING / AIMO) appears as a
+ normal printer in any Linux application. Communicates over USB CDC/ACM in
+ solid-red mode using the ESC/POS protocol.

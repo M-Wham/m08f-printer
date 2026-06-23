@@ -1,0 +1,14 @@
+#!/usr/bin/make -f
+export PYBUILD_NAME=m08f
+
+%:
+	dh $@ --with python3 --buildsystem=pybuild
+
+override_dh_auto_install:
+	dh_auto_install
+	install -Dm700 cups/m08f-backend \
+		debian/m08f-printer/usr/lib/cups/backend/m08f
+	install -Dm644 cups/m08f.ppd \
+		debian/m08f-printer/usr/share/cups/model/m08f.ppd
+	install -Dm644 udev/99-m08f.rules \
+		debian/m08f-printer/usr/lib/udev/rules.d/99-m08f.rules
