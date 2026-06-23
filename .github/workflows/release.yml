@@ -1,0 +1,84 @@
+name: release
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  wheel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - run: python -m pip install --upgrade build
+      - run: python -m build --wheel --sdist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheel
+          path: dist/*
+
+  deb:
+    runs-on: ubuntu-latest
+    container: debian:stable
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build deps
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            debhelper dh-python python3-all python3-setuptools \
+            ghostscript cups devscripts build-essential
+      - name: Assemble debian/ at repo root
+        run: cp -r packaging/deb/debian ./debian
+      - name: Build .deb
+        run: dpkg-buildpackage -us -uc -b
+      - name: Collect artifact
+        run: mkdir -p out && cp ../*.deb out/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deb
+          path: out/*.deb
+
+  rpm:
+    runs-on: ubuntu-latest
+    container: fedora:latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build deps
+        run: |
+          dnf install -y rpm-build rpmdevtools python3-devel \
+            pyproject-rpm-macros ghostscript cups git
+      - name: Build .rpm from working tree
+        run: |
+          set -eux
+          rpmdev-setuptree
+          VERSION=0.1.0
+          # Create a source tarball matching Source0's expected layout.
+          git config --global --add safe.directory "$PWD"
+          git archive --format=tar.gz \
+            --prefix="m08f-printer-${VERSION}/" \
+            -o "$HOME/rpmbuild/SOURCES/m08f-printer-${VERSION}.tar.gz" HEAD
+          rpmbuild -bb packaging/rpm/m08f-printer.spec
+          mkdir -p out && cp "$HOME"/rpmbuild/RPMS/noarch/*.rpm out/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rpm
+          path: out/*.rpm
+
+  release:
+    needs: [wheel, deb, rpm]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Publish release assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**/*
