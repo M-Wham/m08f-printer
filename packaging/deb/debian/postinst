@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "configure" ]; then
+    udevadm control --reload-rules >/dev/null 2>&1 || true
+    udevadm trigger >/dev/null 2>&1 || true
+    echo "m08f-printer installed. To finish setup:"
+    echo "  1. sudo usermod -aG uucp \$USER   (then log out and back in)"
+    echo "  2. Switch the printer to solid-red mode"
+    echo "  3. m08f probe"
+    echo "  4. m08f calibrate        (enter 1677 for A4 at 203 DPI)"
+    echo "  5. sudo lpadmin -p M08F -E -v m08f:/dev/m08f -P /usr/share/cups/model/m08f.ppd"
+    echo "     sudo cupsenable M08F && sudo cupsaccept M08F"
+fi
+
+#DEBHELPER#
